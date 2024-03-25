@@ -1,9 +1,15 @@
 package com.cires.technlogies.demo.dto;
 
+import org.springframework.security.core.GrantedAuthority;
+
+import java.util.Collection;
+
 public class UserDto {
     private Long id;
     private String firstName;
     private String lastName;
+    public UserDto(){
+    }
 
     public Long getId() {
         return id;

@@ -2,7 +2,6 @@ package com.cires.technlogies.demo.security;
 
 
 import com.cires.technlogies.demo.dto.UserDetailsServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,8 +23,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    @Autowired
+    final
     JwtAuthFilter jwtAuthFilter;
+
+    public SecurityConfig(JwtAuthFilter jwtAuthFilter) {
+        this.jwtAuthFilter = jwtAuthFilter;
+    }
 
     @Bean
     public UserDetailsService userDetailsService() {
@@ -34,19 +37,22 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        System.out.println("hhh");
         return http.csrf().disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/api/auth").permitAll()
+                .requestMatchers("/api/users/batch","/api/users/generate", "/api/auth","/swagger-ui/**","/api-docs/**","/h2-console/**").permitAll()
                 .and()
-                .authorizeHttpRequests().requestMatchers("/api/users**")
+                .authorizeHttpRequests().requestMatchers("/api/users/me")
                 .authenticated()
                 .and()
+                .authorizeHttpRequests(aut ->
+                        aut.requestMatchers("/api/users/{username}").hasAuthority("ADMIN")
+                )
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class).build();
-
     }
 
     @Bean

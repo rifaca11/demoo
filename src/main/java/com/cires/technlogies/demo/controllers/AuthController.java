@@ -4,6 +4,7 @@ import com.cires.technlogies.demo.dto.AuthRequestDto;
 import com.cires.technlogies.demo.dto.JwtResponseDto;
 import com.cires.technlogies.demo.services.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -19,14 +20,13 @@ public class AuthController {
 
     @Autowired
     AuthenticationManager authenticationManager;
-
     @PostMapping("/api/auth")
     public JwtResponseDto AuthenticateAndGetToken(@RequestBody AuthRequestDto authRequestDTO){
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequestDTO.getUsername(), authRequestDTO.getPassword()));
         if(authentication.isAuthenticated()){
             return JwtResponseDto.builder()
-                    .accessToken(jwtService.GenerateToken(authRequestDTO.getUsername())) // Appel de la méthode build() manquant
-                    .build(); // Ajout de l'appel de la méthode build()
+                    .accessToken(jwtService.GenerateToken(authRequestDTO.getUsername()))
+                    .build();
         } else {
             throw new UsernameNotFoundException("invalid user request..!!");
         }

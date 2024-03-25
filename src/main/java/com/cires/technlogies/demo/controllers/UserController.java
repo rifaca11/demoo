@@ -1,5 +1,6 @@
 package com.cires.technlogies.demo.controllers;
 
+import com.cires.technlogies.demo.dto.CustomUserDetails;
 import com.cires.technlogies.demo.dto.UserDto;
 import com.cires.technlogies.demo.entities.UserEntity;
 import com.cires.technlogies.demo.mapper.IMapperDto;
@@ -15,6 +16,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import com.github.javafaker.Faker;
@@ -128,5 +132,17 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while processing the file.");
         }
     }
+    @GetMapping(value = "/api/users/me")
+    public ResponseEntity<String> getCurrentUser(Authentication authentication){
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        String userName = userDetails.getUsername();
+        return ResponseEntity.ok("My profile: " +userName);
     }
+
+    @GetMapping(value = "/api/users/{username}")
+    public ResponseEntity<String> getUserProfile(@PathVariable String username){
+        return ResponseEntity.ok("Profile of user:" + username);
+    }
+
+}
 
