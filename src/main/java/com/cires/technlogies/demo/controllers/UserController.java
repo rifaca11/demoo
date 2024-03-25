@@ -1,6 +1,5 @@
 package com.cires.technlogies.demo.controllers;
 
-import com.cires.technlogies.demo.dto.CustomUserDetails;
 import com.cires.technlogies.demo.dto.UserDto;
 import com.cires.technlogies.demo.entities.UserEntity;
 import com.cires.technlogies.demo.mapper.IMapperDto;
@@ -9,6 +8,7 @@ import com.cires.technlogies.demo.services.IUserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.javafaker.Faker;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -16,12 +16,10 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import com.github.javafaker.Faker;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;

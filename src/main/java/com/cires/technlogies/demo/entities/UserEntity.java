@@ -26,6 +26,13 @@ public class UserEntity {
         private String password;
         private String role;
 
+        public UserEntity() {
+                
+        }
+
+        public UserEntity(String john, String doe, String date, String newYork, String us, String avatar, String company, String manager, String number, String johnDoe, String mail, String password, String admin) {
+        }
+
         public Long getId() {
                 return id;
         }
